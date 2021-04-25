@@ -2,9 +2,9 @@
 apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
 metadata:
-  name: "mutatingWebHookShareProcessNamespace"
+  name: "mutatingwebhook.sharepid.com"
 webhooks:
-- name: "mutatingWebHookShareProcessNamespace"
+- name: "mutatingwebhook.sharepid.com"
   namespaceSelector:
     matchLabels:
       webhook: enabled
