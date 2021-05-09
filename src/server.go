@@ -31,6 +31,12 @@ func (s Server) getCA(w http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(w, string(s.CaPEM))
 }
 
+func (s Server) healthCheck(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(`{"message": "OK"}`))
+}
+
 func (s Server) postWebhook(w http.ResponseWriter, r *http.Request) {
 	var request AdmissionReviewRequest
 	err := json.NewDecoder(r.Body).Decode(&request)
@@ -38,6 +44,8 @@ func (s Server) postWebhook(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, fmt.Sprintf("JSON body in invalid format: %s\n", err.Error()), http.StatusBadRequest)
 		return
 	}
+	fmt.Printf("debug: %+v\n", request.Request)
+
 	if request.APIVersion != "admission.k8s.io/v1" || request.Kind != "AdmissionReview" {
 		http.Error(w, fmt.Sprintf("wrong APIVersion or kind: %s - %s", request.APIVersion, request.Kind), http.StatusBadRequest)
 		return

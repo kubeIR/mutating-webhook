@@ -5,6 +5,7 @@ metadata:
   name: mutatingwebhook
   namespace: mutatingwebhook
 spec:
+  type: LoadBalancer
   selector:
     app: mutatingwebhook
   ports:
